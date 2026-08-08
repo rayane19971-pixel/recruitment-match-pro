@@ -4,6 +4,7 @@ export default function ScoutingFilters({ onSearch, loading }) {
   const [position, setPosition] = useState('Tous');
   const [maxAge, setMaxAge] = useState(30);
   const [maxContractYear, setMaxContractYear] = useState(2030);
+  const [maxMarketValue, setMaxMarketValue] = useState(100); // en M€
   
   // State Opta local (isole le composant pour éviter les re-renders inutiles de la grille)
   const [finishing, setFinishing] = useState(70);
@@ -19,6 +20,7 @@ export default function ScoutingFilters({ onSearch, loading }) {
       position,
       maxAge,
       maxContractYear,
+      maxMarketValue,
       finishing,
       dribbling,
       passing,
@@ -55,19 +57,31 @@ export default function ScoutingFilters({ onSearch, loading }) {
         </div>
       </div>
 
-      <div className="filter-group">
-        <label className="filter-label">
-          Fin de contrat max: <span className="slider-val">{maxContractYear}</span>
-        </label>
-        <input 
-          type="range" min="2025" max="2032" value={maxContractYear} 
-          onChange={(e) => setMaxContractYear(Number(e.target.value))}
-        />
+      <div className="filters-row" style={{ marginTop: '0.5rem' }}>
+        <div className="filter-group">
+          <label className="filter-label">
+            Fin contrat max: <span className="slider-val">{maxContractYear}</span>
+          </label>
+          <input 
+            type="range" min="2025" max="2032" value={maxContractYear} 
+            onChange={(e) => setMaxContractYear(Number(e.target.value))}
+          />
+        </div>
+
+        <div className="filter-group">
+          <label className="filter-label">
+            Valeur Max: <span className="slider-val">{maxMarketValue >= 200 ? 'Illimitée' : `${maxMarketValue} M€`}</span>
+          </label>
+          <input 
+            type="range" min="5" max="200" step="5" value={maxMarketValue} 
+            onChange={(e) => setMaxMarketValue(Number(e.target.value))}
+          />
+        </div>
       </div>
 
-      <hr style={{ borderColor: 'rgba(255,255,255,0.08)' }} />
+      <hr style={{ borderColor: 'rgba(255,255,255,0.08)', margin: '1rem 0' }} />
 
-      <h4 style={{ fontSize: '0.78rem', color: '#e5a93c', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <h4 style={{ fontSize: '0.78rem', color: '#06b6d4', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         Profil Statistiques Opta (0 - 100) :
       </h4>
 
@@ -134,8 +148,13 @@ export default function ScoutingFilters({ onSearch, loading }) {
         </div>
       </div>
 
-      <button className="btn-primary" onClick={handleSubmit} disabled={loading} style={{ marginTop: '0.5rem', width: '100%', padding: '12px' }}>
-        {loading ? 'Calcul en cours...' : '🔍 Lancer le Matching Opta'}
+      <button 
+        className="btn-primary" 
+        style={{ width: '100%', marginTop: '1.2rem', padding: '12px' }}
+        onClick={handleSubmit}
+        disabled={loading}
+      >
+        {loading ? 'Calcul Opta en cours...' : '🔍 Lancer le Matching Opta'}
       </button>
     </div>
   );

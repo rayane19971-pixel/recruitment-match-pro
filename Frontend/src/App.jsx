@@ -55,6 +55,10 @@ export default function App() {
     setLoading(true);
 
     let url = `http://127.0.0.1:8000/players/search?finishing=${filters.finishing}&dribbling=${filters.dribbling}&passing=${filters.passing}&pace=${filters.pace}&defending=${filters.defending}&physical=${filters.physical}&max_age=${filters.maxAge}&max_contract_year=${filters.maxContractYear}`;
+    
+    if (filters.maxMarketValue && filters.maxMarketValue < 200) {
+      url += `&max_market_value=${filters.maxMarketValue * 1000000}`;
+    }
     if (filters.position !== 'Tous') {
       url += `&position=${encodeURIComponent(filters.position)}`;
     }
@@ -80,6 +84,7 @@ export default function App() {
           if (filters.position !== 'Tous' && p.position !== filters.position) return false;
           if (p.age > filters.maxAge) return false;
           if (p.contract_expires > filters.maxContractYear) return false;
+          if (filters.maxMarketValue && filters.maxMarketValue < 200 && typeof p.market_value === 'number' && p.market_value > (filters.maxMarketValue * 1000000)) return false;
           return true;
         });
 
@@ -118,6 +123,7 @@ export default function App() {
         position: 'Tous',
         maxAge: 30,
         maxContractYear: 2030,
+        maxMarketValue: 100,
         finishing: 70,
         dribbling: 70,
         passing: 70,
