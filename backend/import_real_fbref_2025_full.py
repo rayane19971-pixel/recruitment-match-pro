@@ -36,8 +36,22 @@ REAL_MARKET_VALUES = {
   "Gianluigi Donnarumma": 40000000,
   "Lucas Beraldo": 30000000,
   "Gonçalo Ramos": 45000000,
-  "Randal Kolo Muani": 40000000
+  "Randal Kolo Muani": 40000000,
+  "Kelechi Iheanacho": 12000000,
+  "Nampalys Mendy": 4000000,
+  "Liam Delap": 15000000,
+  "Joshua Zirkzee": 50000000
 }
+
+def extract_scalar(val, default=''):
+    if isinstance(val, pd.Series):
+        if len(val) > 0:
+            val = val.iloc[0]
+        else:
+            return default
+    if pd.isna(val) or val is None:
+        return default
+    return str(val).strip()
 
 def import_fbref_2025_real_data():
     print("[INIT] Chargement des statistiques réelles FBref/Opta 2024-2025...")
@@ -58,22 +72,23 @@ def import_fbref_2025_real_data():
     cursor.execute("DELETE FROM players")
 
     inserted = 0
-    # Réinitialisation de l'index du dataframe
     df = stats.reset_index()
 
-    for idx, row in df.iterrows():
-        p_name = str(row.get('player', '')).strip()
+    for idx in range(len(df)):
+        row = df.iloc[idx]
+        
+        p_name = extract_scalar(row.get('player'))
         if not p_name or p_name == 'nan':
             continue
 
-        team = str(row.get('team', 'Club Pro')).strip()
-        league = str(row.get('league', 'Ligue 1')).strip()
-        pos_raw = str(row.get('pos', 'FW')).upper()
-        nat_raw = str(row.get('nation', 'FRA')).split()[-1] if str(row.get('nation', '')) else 'France'
+        team = extract_scalar(row.get('team'), 'Club Pro')
+        league = extract_scalar(row.get('league'), 'Ligue 1')
+        pos_raw = extract_scalar(row.get('pos'), 'FW').upper()
+        nat_raw = extract_scalar(row.get('nation'), 'France').split()[-1]
 
         # VRAI ÂGE 2024-2025 extrait de FBref
         try:
-            raw_age = str(row.get('age', '24'))
+            raw_age = extract_scalar(row.get('age'), '24')
             age = int(float(raw_age.split('-')[0])) if '-' in raw_age else int(float(raw_age))
         except (ValueError, TypeError):
             age = 24
@@ -89,32 +104,23 @@ def import_fbref_2025_real_data():
             position = 'Attaquant'
 
         # VRAIES PERFORMANCES 2024-2025 EXTRAITES DE FBREF / OPTA
-        # Buts par 90m (Gls), Passes dé par 90m (Ast), Passes progressives (PrgP), Courses progressives (PrgC)
         try:
-            gls_90 = float(row.get('Gls', 0) or 0)
-            ast_90 = float(row.get('Ast', 0) or 0)
-            prg_p = float(row.get('PrgP', 0) or 0)
-            prg_c = float(row.get('PrgC', 0) or 0)
-            min_played = float(row.get('Min', 0) or 0)
+            gls_90 = float(extract_scalar(row.get('Gls'), '0') or 0)
+            ast_90 = float(extract_scalar(row.get('Ast'), '0') or 0)
+            prg_p = float(extract_scalar(row.get('PrgP'), '0') or 0)
+            prg_c = float(extract_scalar(row.get('PrgC'), '0') or 0)
+            min_played = float(extract_scalar(row.get('Min'), '0') or 0)
         except (ValueError, TypeError):
             gls_90, ast_90, prg_p, prg_c, min_played = 0, 0, 0, 0, 0
 
         # Calcul dynamique des 6 attributs Opta réels selon les performances 2024-2025
         h = abs(hash(p_name))
         
-        # 1. Finition (Finition réelle / Buts 90m)
         finishing = min(99, max(35, int(50 + (gls_90 * 40) + (h % 7))))
-        
-        # 2. Passes (Passes clés / xA réels)
         passing = min(99, max(35, int(50 + (ast_90 * 35) + (prg_p * 3) + ((h // 10) % 7))))
-        
-        # 3. Dribble (Progression ballon / Percussion)
         dribbling = min(99, max(35, int(50 + (prg_c * 4) + ((h // 100) % 7))))
-        
-        # 4. Vitesse
         pace = min(99, max(40, int(65 + ((h // 1000) % 28))))
         
-        # 5. Défense
         if position == 'Défenseur':
             defending = min(99, max(60, int(75 + ((h // 10000) % 20))))
         elif position == 'Milieu':
@@ -122,19 +128,17 @@ def import_fbref_2025_real_data():
         else:
             defending = min(99, max(20, int(35 + ((h // 10000) % 20))))
             
-        # 6. Physique (Endurance selon le temps de jeu réel 2024-2025)
         physical = min(99, max(45, int(60 + min(20, min_played / 100) + ((h // 100000) % 15))))
 
-        # VRAIE VALEUR MARCHANDE 2024-2025 (Recherche directe ou estimation réaliste)
+        # VRAIE VALEUR MARCHANDE 2024-2025
         if p_name in REAL_MARKET_VALUES:
             market_value = REAL_MARKET_VALUES[p_name]
         else:
-            # Estimation marché selon l'âge réel et les stats réelles 2024-2025
             base_val = (finishing + dribbling + passing + pace) * 250000
             if age <= 23:
-                base_val *= 1.4  # Prime jeune potentiel
+                base_val *= 1.4
             elif age >= 32:
-                base_val *= 0.5  # Décote fin de carrière
+                base_val *= 0.5
             market_value = int(max(1000000, min(150000000, base_val)))
 
         wage = int(market_value * 0.07)
@@ -154,7 +158,7 @@ def import_fbref_2025_real_data():
 
     conn.commit()
     conn.close()
-    print(f"[SUCCESS] {inserted} joueurs réels 2024-2025 avec vrais âges, vraies stats et valeurs de marché insérés avec succès !")
+    print(f"[SUCCESS] {inserted} joueurs réels 2024-2025 insérés avec des noms 100% PROPRES !")
 
 if __name__ == "__main__":
     import_fbref_2025_real_data()
