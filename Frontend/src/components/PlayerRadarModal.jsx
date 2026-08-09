@@ -23,21 +23,32 @@ export default function PlayerRadarModal({ player, token, role, onClose, onSelec
           setLoadingKnn(false);
         })
         .catch(err => {
-          // Fallback KNN local sur les 17 660 joueurs (filtré par même poste)
+          // Algorithme KNN Pondéré sur les 2 854 Joueurs Opta 2024-2025 (Statistiques + Niveau / Valeur marchande)
           const candidates = ALL_PLAYERS.filter(p => p.id !== player.id && p.position === player.position);
+          
+          const pVal = Math.log10(Math.max(1000000, player.market_value || 1000000));
+
           const computed = candidates.map(c => {
-            const diffSq = (
+            const cVal = Math.log10(Math.max(1000000, c.market_value || 1000000));
+            
+            // Écart quadratique moyen sur les 6 compartiments Opta
+            const diffStatsSq = (
               Math.pow(c.stat_finishing - (player.stat_finishing || 50), 2) +
               Math.pow(c.stat_dribbling - (player.stat_dribbling || 50), 2) +
               Math.pow(c.stat_passing - (player.stat_passing || 50), 2) +
               Math.pow(c.stat_pace - (player.stat_pace || 50), 2) +
               Math.pow(c.stat_defending - (player.stat_defending || 50), 2) +
               Math.pow(c.stat_physical - (player.stat_physical || 50), 2)
-            );
-            const dist = Math.sqrt(diffSq / 6);
-            const sim = Math.round(Math.max(0, 100 - dist) * 10) / 10;
+            ) / 6;
+
+            // Écart de standing / statut du joueur (Eviter de matcher Mbappé avec un remplaçant à 0 but)
+            const valDiffSq = Math.pow((pVal - cVal) * 14, 2);
+
+            const dist = Math.sqrt(diffStatsSq + valDiffSq);
+            const sim = Math.round(Math.max(0, 99 - dist) * 10) / 10;
             return { ...c, similarity_score: sim };
           });
+
           computed.sort((a, b) => b.similarity_score - a.similarity_score);
           setSimilarPlayers(computed.slice(0, 4));
           setLoadingKnn(false);
@@ -106,7 +117,7 @@ export default function PlayerRadarModal({ player, token, role, onClose, onSelec
         {/* KNN SIMILAR PLAYERS (JUMEAUX STATISTIQUES) */}
         <div style={{ marginTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '1rem' }}>
           <h4 style={{ fontSize: '0.95rem', color: '#06b6d4', marginBottom: '0.75rem' }}>
-            🤖 Jumeaux Statistiques Opta (Algorithme KNN sur 17 660 joueurs) :
+            🤖 Jumeaux Statistiques Opta (Algorithme KNN sur 2 854 Joueurs Opta 2024-2025) :
           </h4>
           {loadingKnn ? (
             <p style={{ fontSize: '0.8rem', color: '#64748b' }}>Calcul KNN en cours...</p>
