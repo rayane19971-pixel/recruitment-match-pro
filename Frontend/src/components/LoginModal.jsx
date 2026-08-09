@@ -32,8 +32,8 @@ export default function LoginModal({ onLoginSuccess }) {
       const data = await response.json();
       onLoginSuccess(data.access_token, data.role, data.username);
     } catch (err) {
-      // 🛡️ MODE DEMO EN LIGNE (Si le backend local n'est pas joignable sur Vercel)
-      console.warn("Backend local non joignable, bascule automatique en Mode Démo Vercel:", err);
+      // 🛡️ MODE DEMO EN LIGNE (Vérification stricte des identifiants sur Vercel)
+      console.warn("Backend local non joignable, authentification sur identifiants stricts Vercel:", err);
       
       const u = username.trim().toLowerCase();
       const p = password.trim();
@@ -44,11 +44,8 @@ export default function LoginModal({ onLoginSuccess }) {
         onLoginSuccess('demo_token_director', 'director', 'directeur');
       } else if (u === 'scout1' && p === 'Scout_OL') {
         onLoginSuccess('demo_token_scout', 'scout', 'scout1');
-      } else if (u && p) {
-        // Mode invités libres
-        onLoginSuccess('demo_token_guest', 'scout', username);
       } else {
-        setError('Identifiants incorrects');
+        setError('Identifiants incorrects. Veuillez utiliser un des comptes de test autorisés ci-dessous.');
       }
     } finally {
       setLoading(false);
