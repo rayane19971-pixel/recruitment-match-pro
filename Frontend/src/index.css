@@ -1,20 +1,20 @@
 :root {
-  --bg-dark: #0f172a;
-  --bg-card: #1e293b;
-  --bg-card-hover: #334155;
-  --primary: #4f46e5;
-  --primary-light: #6366f1;
-  --accent-cyan: #06b6d4;
-  --accent-emerald: #10b981;
-  --accent-amber: #f59e0b;
-  --accent-rose: #f43f5e;
+  --ol-blue-dark: #071326;
+  --ol-blue-card: #0b1b36;
+  --ol-blue-card-hover: #0f2447;
+  --ol-primary: #0b2c5c;
+  --ol-primary-light: #1a427a;
+  --ol-red: #d31115;
+  --ol-red-hover: #b00c0f;
+  --ol-gold: #e5a93c;
+  --ol-cyan: #00f2fe;
   
-  --text-primary: #f8fafc;
+  --text-primary: #ffffff;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
   
   --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(79, 70, 229, 0.4);
+  --border-glow: rgba(11, 44, 92, 0.4);
   --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   
   --font-main: 'Inter', system-ui, -apple-system, sans-serif;
@@ -29,9 +29,9 @@
 
 body {
   font-family: var(--font-main);
-  background: var(--bg-dark);
+  background: var(--ol-blue-dark);
   background-image: 
-    radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.25) 0px, transparent 50%),
+    radial-gradient(at 0% 0%, rgba(11, 44, 92, 0.4) 0px, transparent 50%),
     radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.15) 0px, transparent 50%);
   background-attachment: fixed;
   color: var(--text-primary);
@@ -53,7 +53,7 @@ h1, h2, h3, h4, .font-heading {
 }
 
 .navbar {
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(7, 19, 38, 0.85);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-glass);
   position: sticky;
@@ -71,8 +71,8 @@ h1, h2, h3, h4, .font-heading {
   gap: 1rem;
 }
 
-.badge-logo {
-  background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+.badge-logo, .ol-badge-logo {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
   width: 44px;
   height: 44px;
   border-radius: 10px;
@@ -81,9 +81,9 @@ h1, h2, h3, h4, .font-heading {
   justify-content: center;
   font-family: var(--font-heading);
   font-weight: 900;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   color: white;
-  box-shadow: 0 0 15px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -97,7 +97,7 @@ h1, h2, h3, h4, .font-heading {
 
 .brand-subtitle {
   font-size: 0.75rem;
-  color: var(--accent-cyan);
+  color: #06b6d4;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -133,9 +133,9 @@ h1, h2, h3, h4, .font-heading {
 }
 
 .nav-btn.active {
-  background: var(--primary);
+  background: #06b6d4;
   color: white;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
 }
 
 .user-profile {
@@ -154,20 +154,20 @@ h1, h2, h3, h4, .font-heading {
 }
 
 .role-admin {
-  background: rgba(245, 158, 11, 0.15);
-  color: var(--accent-amber);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: rgba(229, 169, 60, 0.15);
+  color: var(--ol-gold);
+  border: 1px solid rgba(229, 169, 60, 0.3);
 }
 
 .role-director {
-  background: rgba(244, 63, 94, 0.15);
-  color: var(--accent-rose);
-  border: 1px solid rgba(244, 63, 94, 0.3);
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .role-scout {
   background: rgba(6, 182, 212, 0.15);
-  color: var(--accent-cyan);
+  color: #06b6d4;
   border: 1px solid rgba(6, 182, 212, 0.3);
 }
 
@@ -183,9 +183,9 @@ h1, h2, h3, h4, .font-heading {
 }
 
 .btn-logout:hover {
-  background: rgba(244, 63, 94, 0.2);
+  background: rgba(239, 68, 68, 0.2);
   color: white;
-  border-color: var(--accent-rose);
+  border-color: #ef4444;
 }
 
 /* --- MAIN LAYOUT --- */
@@ -199,7 +199,7 @@ h1, h2, h3, h4, .font-heading {
 
 /* --- GLASS CARDS --- */
 .glass-card {
-  background: var(--bg-card);
+  background: var(--ol-blue-card);
   border: 1px solid var(--border-glass);
   border-radius: 16px;
   padding: 1.25rem;
@@ -262,11 +262,11 @@ h1, h2, h3, h4, .font-heading {
 }
 
 .slider-val {
-  color: var(--accent-cyan);
+  color: #06b6d4;
   font-weight: 700;
 }
 
-/* --- COMPACT SLIDERS (2 COLUMNS) --- */
+/* --- COMPACT & SLEEK SLIDERS (2 COLUMNS) --- */
 .sliders-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -277,7 +277,7 @@ h1, h2, h3, h4, .font-heading {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(7, 19, 38, 0.5);
   padding: 6px 10px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -295,9 +295,9 @@ h1, h2, h3, h4, .font-heading {
 input[type="range"] {
   -webkit-appearance: none;
   width: 100%;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.12);
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.15);
   outline: none;
   cursor: pointer;
 }
@@ -305,11 +305,11 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: var(--primary-light);
-  box-shadow: 0 0 8px var(--primary);
+  background: #06b6d4;
+  box-shadow: 0 0 10px #06b6d4;
   transition: transform 0.1s ease;
 }
 
@@ -321,7 +321,7 @@ select, input[type="text"], input[type="number"], input[type="password"] {
   width: 100%;
   padding: 8px 12px;
   border-radius: 8px;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(7, 19, 38, 0.6);
   border: 1px solid var(--border-glass);
   color: white;
   font-family: var(--font-main);
@@ -331,12 +331,12 @@ select, input[type="text"], input[type="number"], input[type="password"] {
 }
 
 select:focus, input:focus {
-  border-color: var(--primary-light);
-  box-shadow: 0 0 12px rgba(79, 70, 229, 0.5);
+  border-color: #06b6d4;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.5);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  background: linear-gradient(135deg, #06b6d4, #2563eb);
   color: white;
   border: none;
   padding: 10px 18px;
@@ -349,12 +349,12 @@ select:focus, input:focus {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
 }
 
 /* --- PLAYER CARDS GRID --- */
@@ -377,7 +377,7 @@ select:focus, input:focus {
 }
 
 .player-card {
-  background: var(--bg-card);
+  background: var(--ol-blue-card);
   border: 1px solid var(--border-glass);
   border-radius: 14px;
   padding: 1.1rem;
@@ -415,7 +415,7 @@ select:focus, input:focus {
 
 .match-badge {
   background: rgba(16, 185, 129, 0.15);
-  color: var(--accent-emerald);
+  color: #10b981;
   border: 1px solid rgba(16, 185, 129, 0.3);
   padding: 3px 9px;
   border-radius: 20px;
@@ -423,23 +423,11 @@ select:focus, input:focus {
   font-size: 0.85rem;
 }
 
-.match-badge.medium {
-  background: rgba(245, 158, 11, 0.15);
-  color: var(--accent-amber);
-  border-color: rgba(245, 158, 11, 0.3);
-}
-
-.match-badge.low {
-  background: rgba(244, 63, 94, 0.15);
-  color: var(--accent-rose);
-  border-color: rgba(244, 63, 94, 0.3);
-}
-
 .player-meta {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.4rem;
-  background: rgba(15, 23, 42, 0.4);
+  background: rgba(7, 19, 38, 0.4);
   padding: 8px 10px;
   border-radius: 8px;
   font-size: 0.78rem;
@@ -457,7 +445,7 @@ select:focus, input:focus {
 }
 
 .confidential-tag {
-  color: var(--accent-amber);
+  color: var(--ol-gold);
   font-style: italic;
   font-size: 0.75rem;
 }
@@ -502,8 +490,8 @@ select:focus, input:focus {
 }
 
 .btn-card-action:hover {
-  background: var(--primary);
-  border-color: var(--primary-light);
+  background: #06b6d4;
+  border-color: #2563eb;
 }
 
 /* --- MODAL --- */
@@ -513,8 +501,8 @@ select:focus, input:focus {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -523,7 +511,7 @@ select:focus, input:focus {
 }
 
 .modal-content {
-  background: var(--bg-card);
+  background: var(--ol-blue-card);
   border: 1px solid var(--border-glass);
   border-radius: 20px;
   width: 100%;
@@ -560,4 +548,127 @@ select:focus, input:focus {
 .login-box {
   max-width: 420px;
   margin: 4rem auto;
+}
+
+/* ==========================================================================
+   📱 OPTIMISATIONS MOBILES ET SMARTPHONES (RESPONSIVE COMPLÈT)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .brand-section {
+    justify-content: center;
+  }
+
+  .nav-links {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .user-profile {
+    justify-content: space-between;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 0.5rem;
+  }
+
+  .main-content {
+    padding: 0.85rem;
+  }
+
+  .scouting-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .filters-row {
+    grid-template-columns: 1fr;
+  }
+
+  .sliders-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  input[type="range"] {
+    height: 6px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  select, input[type="text"], input[type="number"], input[type="password"] {
+    font-size: 16px; /* Empêche le zoom auto iOS */
+    padding: 10px 14px;
+    min-height: 44px;
+  }
+
+  .btn-primary, .btn-card-action, .nav-btn {
+    min-height: 44px;
+    font-size: 0.95rem;
+  }
+
+  .players-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .modal-overlay {
+    padding: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .modal-content {
+    padding: 1.25rem 1rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .radar-canvas-container svg {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 320px;
+  }
+
+  .login-box {
+    margin: 1.5rem auto;
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .badge-logo, .ol-badge-logo {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .brand-title {
+    font-size: 1.05rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.65rem;
+  }
+
+  .nav-btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
 }
