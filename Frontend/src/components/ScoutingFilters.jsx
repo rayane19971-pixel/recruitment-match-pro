@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 
 export default function ScoutingFilters({ onSearch, loading }) {
   const [position, setPosition] = useState('Tous');
-  const [maxAge, setMaxAge] = useState(30);
+  const [maxAge, setMaxAge] = useState(38);
   const [maxContractYear, setMaxContractYear] = useState(2030);
-  const [maxMarketValue, setMaxMarketValue] = useState(100); // en M€
+  const [maxMarketValue, setMaxMarketValue] = useState(200); // en M€
   
-  // State Opta local (isole le composant pour éviter les re-renders inutiles de la grille)
-  const [finishing, setFinishing] = useState(70);
-  const [dribbling, setDribbling] = useState(70);
-  const [passing, setPassing] = useState(70);
-  const [pace, setPace] = useState(75);
-  const [defending, setDefending] = useState(50);
-  const [physical, setPhysical] = useState(65);
+  // State Opta local (ouvert pour charger les joueurs immédiatement)
+  const [finishing, setFinishing] = useState(40);
+  const [dribbling, setDribbling] = useState(40);
+  const [passing, setPassing] = useState(40);
+  const [pace, setPace] = useState(40);
+  const [defending, setDefending] = useState(30);
+  const [physical, setPhysical] = useState(40);
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
